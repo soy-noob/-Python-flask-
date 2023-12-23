@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <title>b站番剧排行榜</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="filter-list-box">
+        <ul class="filter-list-region">
+          <p class="filter-list-title filter-title-region">
+            地区 <span class="dropdown-arrow dropdown-arrow-region"><</span>
+          </p>
+          <li class="filter-item-region">全部</li>
+          <li class="filter-item-region">日本</li>
+          <li class="filter-item-region">美国</li>
+          <li class="filter-item-region">其他</li>
+        </ul>
+        <ul class="filter-list-state">
+          <p class="filter-list-title filter-title-state">
+            状态 <span class="dropdown-arrow dropdown-arrow-state"><</span>
+          </p>
+          <li class="filter-item-state">全部</li>
+          <li class="filter-item-state">完结</li>
+          <li class="filter-item-state">连载</li>
+        </ul>
+        <ul class="filter-list-season">
+          <p class="filter-list-title filter-title-season">
+            季度 <span class="dropdown-arrow dropdown-arrow-season"><</span>
+          </p>
+          <li class="filter-item-season">全部</li>
+          <li class="filter-item-season">1月</li>
+          <li class="filter-item-season">4月</li>
+          <li class="filter-item-season">7月</li>
+          <li class="filter-item-season">10月</li>
+        </ul>
+        <ul class="filter-list-time">
+          <p class="filter-list-title filter-title-year">
+            年份 <span class="dropdown-arrow dropdown-arrow-year"><</span>
+          </p>
+          <li class="filter-item-year">全部</li>
+          <li class="filter-item-year">2024</li>
+          <li class="filter-item-year">2023</li>
+          <li class="filter-item-year">2022</li>
+          <li class="filter-item-year">2021</li>
+          <li class="filter-item-year">2020</li>
+          <li class="filter-item-year">2019</li>
+          <li class="filter-item-year">2018</li>
+          <li class="filter-item-year">2017</li>
+          <li class="filter-item-year">2016</li>
+          <li class="filter-item-year">2015</li>
+          <li class="filter-item-year">2014-2010</li>
+          <li class="filter-item-year">2009-2005</li>
+          <li class="filter-item-year">2004-2000</li>
+          <li class="filter-item-year">90年代</li>
+          <li class="filter-item-year">80年代</li>
+          <li class="filter-item-year">更早</li>
+        </ul>
+        <ul class="filter-list-style">
+          <p class="filter-list-title filter-title-style">
+            风格 <span class="dropdown-arrow dropdown-arrow-style"><</span>
+          </p>
+          <li class="filter-item-style">全部</li>
+          <li class="filter-item-style">原创</li>
+          <li class="filter-item-style">漫画改</li>
+          <li class="filter-item-style">小说改</li>
+          <li class="filter-item-style">游戏改</li>
+          <li class="filter-item-style">特摄</li>
+          <li class="filter-item-style">布袋戏</li>
+          <li class="filter-item-style">热血</li>
+          <li class="filter-item-style">穿越</li>
+          <li class="filter-item-style">奇幻</li>
+          <li class="filter-item-style">战斗</li>
+          <li class="filter-item-style">搞笑</li>
+          <li class="filter-item-style">日常</li>
+          <li class="filter-item-style">科幻</li>
+          <li class="filter-item-style">萌系</li>
+          <li class="filter-item-style">治愈</li>
+          <li class="filter-item-style">校园</li>
+          <li class="filter-item-style">少儿</li>
+          <li class="filter-item-style">泡面</li>
+          <li class="filter-item-style">恋爱</li>
+          <li class="filter-item-style">少女</li>
+          <li class="filter-item-style">魔法</li>
+          <li class="filter-item-style">冒险</li>
+          <li class="filter-item-style">历史</li>
+          <li class="filter-item-style">架空</li>
+          <li class="filter-item-style">机战</li>
+          <li class="filter-item-style">神魔</li>
+          <li class="filter-item-style">声控</li>
+          <li class="filter-item-style">运动</li>
+          <li class="filter-item-style">励志</li>
+          <li class="filter-item-style">音乐</li>
+          <li class="filter-item-style">推理</li>
+          <li class="filter-item-style">社团</li>
+          <li class="filter-item-style">智斗</li>
+          <li class="filter-item-style">催泪</li>
+          <li class="filter-item-style">美食</li>
+          <li class="filter-item-style">偶像</li>
+          <li class="filter-item-style">乙女</li>
+          <li class="filter-item-style">职场</li>
+        </ul>
+      </div>
+
+      <div class="bangumi-list-box">
+        <p class="list-title">哔哩哔哩番剧排行榜</p>
+        <ul class="bangumi-list"></ul>
+      </div>
+    </div>
+
+    <script>
+      const filter_title_region = document.querySelector(
+        ".filter-title-region"
+      );
+      const filter_title_state = document.querySelector(".filter-title-state");
+      const filter_title_season = document.querySelector(
+        ".filter-title-season"
+      );
+      const filter_title_year = document.querySelector(".filter-title-year");
+      const filter_title_style = document.querySelector(".filter-title-style");
+
+      const selections_region =
+        document.getElementsByClassName("filter-item-region");
+      const selections_state =
+        document.getElementsByClassName("filter-item-state");
+      const selections_season =
+        document.getElementsByClassName("filter-item-season");
+      const selections_year =
+        document.getElementsByClassName("filter-item-year");
+      const selections_style =
+        document.getElementsByClassName("filter-item-style");
+
+      const dropdown_arrow_region = document.querySelector(
+        ".dropdown-arrow-region"
+      );
+      const dropdown_arrow_state = document.querySelector(
+        ".dropdown-arrow-state"
+      );
+      const dropdown_arrow_season = document.querySelector(
+        ".dropdown-arrow-season"
+      );
+      const dropdown_arrow_year = document.querySelector(
+        ".dropdown-arrow-year"
+      );
+      const dropdown_arrow_style = document.querySelector(
+        ".dropdown-arrow-style"
+      );
+
+      let filter_state_region = false;
+      let filter_state_state = false;
+      let filter_state_season = false;
+      let filter_state_year = false;
+      let filter_state_style = false;
+
+      let now_selected_region = "全部";
+      let now_selected_state = "全部";
+      let now_selected_season = "全部";
+      let now_selected_year = "全部";
+      let now_selected_style = "全部";
+
+      filter_title_region.addEventListener("click", function () {
+        filter_state_region = !filter_state_region;
+        if (filter_state_region) {
+          for (var i = 0; i < selections_region.length; i++) {
+            dropdown_arrow_region.style.transform = "Rotate(-90deg)";
+            selections_region[i].style.opacity = "1";
+            selections_region[i].style.height = "45px";
+            selections_region[i].style.lineHeight = "45px";
+            selections_region[i].style.fontSize = "20px";
+          }
+        } else {
+          for (var i = 0; i < selections_region.length; i++) {
+            dropdown_arrow_region.style.transform = "Rotate(0deg)";
+            selections_region[i].style.opacity = "0";
+            selections_region[i].style.height = "0";
+            selections_region[i].style.lineHeight = "0";
+            selections_region[i].style.fontSize = "0";
+          }
+        }
+      });
+
+      filter_title_state.addEventListener("click", function () {
+        filter_state_state = !filter_state_state;
+        if (filter_state_state) {
+          for (var i = 0; i < selections_state.length; i++) {
+            dropdown_arrow_state.style.transform = "Rotate(-90deg)";
+            selections_state[i].style.opacity = "1";
+            selections_state[i].style.height = "45px";
+            selections_state[i].style.lineHeight = "45px";
+            selections_state[i].style.fontSize = "20px";
+          }
+        } else {
+          for (var i = 0; i < selections_state.length; i++) {
+            dropdown_arrow_state.style.transform = "Rotate(0deg)";
+            selections_state[i].style.opacity = "0";
+            selections_state[i].style.height = "0";
+            selections_state[i].style.lineHeight = "0";
+            selections_state[i].style.fontSize = "0";
+          }
+        }
+      });
+
+      filter_title_season.addEventListener("click", function () {
+        filter_state_season = !filter_state_season;
+        if (filter_state_season) {
+          for (var i = 0; i < selections_season.length; i++) {
+            dropdown_arrow_season.style.transform = "Rotate(-90deg)";
+            selections_season[i].style.opacity = "1";
+            selections_season[i].style.height = "45px";
+            selections_season[i].style.lineHeight = "45px";
+            selections_season[i].style.fontSize = "20px";
+          }
+        } else {
+          for (var i = 0; i < selections_season.length; i++) {
+            dropdown_arrow_season.style.transform = "Rotate(0deg)";
+            selections_season[i].style.opacity = "0";
+            selections_season[i].style.height = "0";
+            selections_season[i].style.lineHeight = "0";
+            selections_season[i].style.fontSize = "0";
+          }
+        }
+      });
+
+      filter_title_year.addEventListener("click", function () {
+        filter_state_year = !filter_state_year;
+        if (filter_state_year) {
+          for (var i = 0; i < selections_year.length; i++) {
+            dropdown_arrow_year.style.transform = "Rotate(-90deg)";
+            selections_year[i].style.opacity = "1";
+            selections_year[i].style.height = "45px";
+            selections_year[i].style.lineHeight = "45px";
+            selections_year[i].style.fontSize = "20px";
+          }
+        } else {
+          for (var i = 0; i < selections_year.length; i++) {
+            dropdown_arrow_year.style.transform = "Rotate(0deg)";
+            selections_year[i].style.opacity = "0";
+            selections_year[i].style.height = "0";
+            selections_year[i].style.lineHeight = "0";
+            selections_year[i].style.fontSize = "0";
+          }
+        }
+      });
+
+      filter_title_style.addEventListener("click", function () {
+        filter_state_style = !filter_state_style;
+        if (filter_state_style) {
+          for (var i = 0; i < selections_style.length; i++) {
+            dropdown_arrow_style.style.transform = "Rotate(-90deg)";
+            selections_style[i].style.opacity = "1";
+            selections_style[i].style.height = "45px";
+            selections_style[i].style.lineHeight = "45px";
+            selections_style[i].style.fontSize = "20px";
+          }
+        } else {
+          for (var i = 0; i < selections_style.length; i++) {
+            dropdown_arrow_style.style.transform = "Rotate(0deg)";
+            selections_style[i].style.opacity = "0";
+            selections_style[i].style.height = "0";
+            selections_style[i].style.lineHeight = "0";
+            selections_style[i].style.fontSize = "0";
+          }
+        }
+      });
+
+      selections_region[0].style.backgroundColor = "#e63f6e";
+      selections_state[0].style.backgroundColor = "#e63f6e";
+      selections_season[0].style.backgroundColor = "#e63f6e";
+      selections_year[0].style.backgroundColor = "#e63f6e";
+      selections_style[0].style.backgroundColor = "#e63f6e";
+
+      for (var i = 0; i < selections_region.length; i++) {
+        selections_region[i].addEventListener("click", function () {
+          now_selected_region = this.innerHTML;
+          UpdateLeaderBoard();
+          for (var a = 0; a < selections_region.length; a++) {
+            if (selections_region[a].innerHTML != now_selected_region) {
+              selections_region[a].style.backgroundColor = "#fb7299";
+            } else {
+              selections_region[a].style.backgroundColor = "#e63f6e";
+            }
+          }
+        });
+      }
+
+      for (var i = 0; i < selections_state.length; i++) {
+        selections_state[i].addEventListener("click", function () {
+          now_selected_state = this.innerHTML;
+          UpdateLeaderBoard();
+          for (var a = 0; a < selections_state.length; a++) {
+            if (selections_state[a].innerHTML != now_selected_state) {
+              selections_state[a].style.backgroundColor = "#fb7299";
+            } else {
+              selections_state[a].style.backgroundColor = "#e63f6e";
+            }
+          }
+        });
+      }
+
+      for (var i = 0; i < selections_season.length; i++) {
+        selections_season[i].addEventListener("click", function () {
+          now_selected_season = this.innerHTML;
+          UpdateLeaderBoard();
+          for (var a = 0; a < selections_season.length; a++) {
+            if (selections_season[a].innerHTML != now_selected_season) {
+              selections_season[a].style.backgroundColor = "#fb7299";
+            } else {
+              selections_season[a].style.backgroundColor = "#e63f6e";
+            }
+          }
+        });
+      }
+
+      for (var i = 0; i < selections_year.length; i++) {
+        selections_year[i].addEventListener("click", function () {
+          now_selected_year = this.innerHTML;
+          UpdateLeaderBoard();
+          for (var a = 0; a < selections_year.length; a++) {
+            if (selections_year[a].innerHTML != now_selected_year) {
+              selections_year[a].style.backgroundColor = "#fb7299";
+            } else {
+              selections_year[a].style.backgroundColor = "#e63f6e";
+            }
+          }
+        });
+      }
+
+      for (var i = 0; i < selections_style.length; i++) {
+        selections_style[i].addEventListener("click", function () {
+          now_selected_style = this.innerHTML;
+          UpdateLeaderBoard();
+          for (var a = 0; a < selections_style.length; a++) {
+            if (selections_style[a].innerHTML != now_selected_style) {
+              selections_style[a].style.backgroundColor = "#fb7299";
+            } else {
+              selections_style[a].style.backgroundColor = "#e63f6e";
+            }
+          }
+        });
+      }
+    </script>
+
+    <script>
+      let nowData = [];
+      let nowCover = [];
+      let nowCoverElements = [];
+      const bangumiList = document.querySelector(".bangumi-list");
+      function UpdateLeaderBoard() {
+        console.log("启动！");
+
+        var filters = {
+          region: now_selected_region,
+          season: now_selected_season,
+          state: now_selected_state,
+          year: now_selected_year,
+          style: now_selected_style,
+        };
+
+        fetch("/UpdateData?filters=" + JSON.stringify(filters))
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            nowData = data;
+            RegenerateBangumiItem(data);
+            GetCover();
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function UpdateCover() {
+        var len = nowCoverElements.length;
+        for (var i = 0; i < len; i++) {
+          nowCoverElements[i].style.backgroundImage =
+            "url(" + nowCover[i] + ")";
+        }
+      }
+
+      function GetCover() {
+        console.log("Getting Cover Urls......");
+
+        fetch("/UpdateCover")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            nowCover = data;
+            UpdateCover();
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function RegenerateBangumiItem(nowData) {
+        nowCoverElements.length = 0;
+        var nowItems = document.getElementsByClassName("bangumi-item");
+        var len = nowItems.length;
+        for (var i = len - 1; i >= 0; i--) {
+          nowItems = document.getElementsByClassName("bangumi-item");
+          document
+            .querySelector(".bangumi-list")
+            .removeChild(nowItems[nowItems.length - 1]);
+        }
+
+        for (var i = 0; i < nowData.length; i++) {
+          var title = nowData[i]["name"];
+          var rate = nowData[i]["rate"];
+
+          var newItem = document.createElement("li");
+          newItem.setAttribute("class", "bangumi-item");
+
+          var newCover = document.createElement("div");
+          newCover.setAttribute("class", "bangumi-cover");
+          nowCoverElements.push(newCover);
+
+          var newRightBox = document.createElement("div");
+          newRightBox.setAttribute("class", "right-box");
+
+          newTitle = document.createElement("p");
+          newTitle.setAttribute("class", "bangumi-title");
+          newTitle.innerHTML = title;
+
+          newRate = document.createElement("p");
+          newRate.setAttribute("class", "bangumi-rate");
+          newRate.innerHTML = rate;
+
+          newRightBox.appendChild(newTitle);
+          newRightBox.appendChild(newRate);
+
+          newItem.appendChild(newCover);
+          newItem.appendChild(newRightBox);
+
+          bangumiList.appendChild(newItem);
+        }
+      }
+
+      UpdateLeaderBoard();
+    </script>
+  </body>
+</html>
