@@ -1,5 +1,5 @@
 # -Python-flask-
-使用selenium,request,bs4等爬虫库以及flask框架制作的小项目
+使用selenium,bs4等爬虫库以及flask框架制作的小项目
 
 排行榜数据来源:https://www.bilibili.com/anime/index/
 
